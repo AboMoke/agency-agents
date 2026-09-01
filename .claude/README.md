@@ -157,6 +157,76 @@ implementation record.
 Accessibility both above 90, flawless cross-browser behaviour, component reuse
 above 80%, and zero console errors in production.
 
+## Reusing this set in another repository
+
+`scripts/install-my-six-agents.sh` installs exactly these six agents into any
+other repo's `.claude/agents/`, with the safety rules below.
+
+```bash
+./scripts/install-my-six-agents.sh <target-repo-path> [options]
+```
+
+| Option | Effect |
+|--------|--------|
+| *(none)* | Install; prompt before replacing any of the six that already exists and differs |
+| `-y`, `--yes` | Replace differing copies without asking |
+| `-n`, `--dry-run` | Report what would happen; write nothing |
+| `-q`, `--quiet` | Summary and errors only |
+| `-h`, `--help` | Usage |
+
+**Examples**
+```bash
+# Install into another checkout
+./scripts/install-my-six-agents.sh ~/code/my-saas
+
+# Preview first — writes nothing
+./scripts/install-my-six-agents.sh ~/code/my-saas --dry-run
+
+# Unattended (CI, dotfiles bootstrap): take the repo version every time
+./scripts/install-my-six-agents.sh ~/code/my-saas --yes --quiet
+
+# Refresh this repo's own copies after pulling agent updates
+./scripts/install-my-six-agents.sh .
+```
+
+**Exit codes:** `0` success · `1` usage or target error · `2` verification
+failed · `3` you declined a replacement (everything else still installed).
+
+### What it will and will not do
+
+- Writes **only** the six filenames in the set. It contains no `rm`, never
+  empties `.claude/agents/`, and never touches any other agent or file already
+  in the target repo — your own agents and any other roster picks survive
+  untouched, and the run summary tells you how many it left alone.
+- Creates `.claude/agents/` when missing; reuses it when present.
+- If one of the six already exists and is **identical**, it is skipped as
+  already current. If it exists and **differs**, you are asked before anything
+  is replaced. Answer anything other than `y` and your version is kept.
+- With no terminal to prompt on (a pipe, a cron job, CI), it refuses to
+  overwrite and tells you to re-run with `--yes` — it will not silently clobber
+  an edited file.
+- After installing it verifies all six: file present, non-empty, YAML
+  frontmatter fence on line 1, `name` and `description` set, and byte-identical
+  to the source. A file you chose to keep is reported as a warning, not a
+  failure. Anything malformed exits `2`.
+- Works from any working directory — it resolves its sources relative to the
+  script, not to `$PWD`.
+
+### Copy-and-paste command for another Claude Code repository
+
+Run this from the root of the repo you want the agents in:
+
+```bash
+git clone --depth 1 --branch setup-five-agents \
+  https://github.com/AboMoke/agency-agents.git /tmp/agency-agents \
+  && /tmp/agency-agents/scripts/install-my-six-agents.sh .
+```
+
+That clones the roster to a scratch directory, installs the six into the current
+repo's `.claude/agents/`, and verifies them. Restart Claude Code afterwards so it
+picks up the new agents. Drop `--branch setup-five-agents` once that branch is
+merged to `main`.
+
 ## Adding or replacing an agent later
 
 All 286 agents stay available in the division folders — installing one is just
