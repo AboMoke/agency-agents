@@ -1,6 +1,6 @@
-# Claude Code Agent Setup — 5 Specialists
+# Claude Code Agent Setup — 6 Specialists
 
-Five agents from this repository are installed here, project-scoped, in
+Six agents from this repository are installed here, project-scoped, in
 `.claude/agents/`. Claude Code loads them automatically for any session started
 in this repository. The original agent files in the division folders
 (`engineering/`, `design/`, `product/`, `testing/`) are untouched — these are
@@ -15,6 +15,7 @@ verbatim copies made by the repository's own installer.
 | 🧭 Product Manager | `product-manager` | `product/product-manager.md` | Product strategy, PRDs, roadmaps, go-to-market |
 | 🎬 Visual Storyteller | `visual-storyteller` | `design/design-visual-storyteller.md` | Campaign narratives, storyboards, cinematic ads |
 | ⏱️ Performance Benchmarker | `performance-benchmarker` | `testing/testing-performance-benchmarker.md` | Load testing, bottleneck hunting, Core Web Vitals |
+| 🖥️ Frontend Developer | `frontend-developer` | `engineering/engineering-frontend-developer.md` | SaaS web app implementation in React/Vue/Angular/Svelte |
 
 ## How to invoke an agent
 
@@ -90,6 +91,72 @@ Activate Performance Benchmarker mode and audit our marketing site's Core Web
 Vitals. I want measured before/after numbers for every change you recommend.
 ```
 
+### 🖥️ Frontend Developer
+```
+Activate Frontend Developer mode. Build the authenticated dashboard shell for
+our SaaS in React + TypeScript: responsive sidebar nav that collapses to a
+bottom bar on mobile, a virtualized data table for the usage log, and skeleton
+loading states. Mobile-first, WCAG 2.1 AA, keyboard navigable throughout.
+```
+```
+As Frontend Developer, our marketing site scores 62 on Lighthouse Performance.
+Implement code splitting and lazy loading, optimize the image pipeline to modern
+formats with responsive loading, and set a performance budget in CI. Report the
+before/after Core Web Vitals numbers.
+```
+```
+As Frontend Developer, turn the design system UI Designer produced into a real
+component library: typed React components with every state, unit tests for each,
+proper ARIA patterns for the interactive ones, and a Storybook entry per
+component so the team can use it without reading the source.
+```
+
+## Frontend Developer — capabilities in detail
+
+Added as the sixth agent to close the SaaS web-implementation gap. Invoke it the
+same way as the others — *"Activate Frontend Developer mode and …"*, *"As
+Frontend Developer, …"*, or *"Use the Frontend Developer agent to …"*.
+
+**Application development**
+- Responsive, performant web apps in React, Vue, Angular, or Svelte
+- Pixel-perfect implementation of designs with modern CSS
+- Component libraries and design systems built for scale
+- Backend API integration and application state management
+- Default requirement it enforces: accessibility compliance and mobile-first responsive design on everything
+
+**Performance**
+- Core Web Vitals optimization, applied from the start rather than retrofitted
+- Bundle-size reduction via code splitting and lazy loading / dynamic imports
+- Image and asset optimization — modern formats, responsive loading
+- Progressive Web Apps: service workers, caching, offline capability
+- Smooth animations and micro-interactions
+- Real User Monitoring integration; cross-browser compatibility and graceful degradation
+
+**Accessibility**
+- WCAG 2.1 AA compliance, semantic HTML, correct ARIA labelling
+- Advanced ARIA patterns for complex interactive components
+- Keyboard navigation and screen-reader compatibility, tested against real assistive tech
+- Automated accessibility testing wired into CI/CD
+
+**Code quality**
+- TypeScript throughout, with proper tooling and build configuration
+- Unit and integration tests at high coverage; E2E for critical flows
+- Error handling and user feedback systems
+- Maintainable component architecture with clear separation of concerns
+- CI/CD integration for frontend deployments
+
+**Also covers** — editor-integration engineering: extensions with navigation
+commands, WebSocket/RPC bridges, protocol URI handling, sub-150ms navigation
+round trips. Niche, but it is in scope if you ever need it.
+
+**Deliverables:** working typed components, a UI implementation write-up, a
+performance-optimization report with measured numbers, and an accessibility
+implementation record.
+
+**Its definition of done:** page loads under 3s on 3G, Lighthouse Performance and
+Accessibility both above 90, flawless cross-browser behaviour, component reuse
+above 80%, and zero console errors in production.
+
 ## Adding or replacing an agent later
 
 All 286 agents stay available in the division folders — installing one is just
@@ -114,7 +181,7 @@ rm .claude/agents/design-visual-storyteller.md
 ```bash
 rm -rf .claude/agents
 ./scripts/install.sh --tool claude-code \
-  --agent mobile-app-builder,ui-designer,product-manager,visual-storyteller,performance-benchmarker \
+  --agent mobile-app-builder,ui-designer,product-manager,visual-storyteller,performance-benchmarker,frontend-developer \
   --path "$(pwd)/.claude/agents"
 ```
 
@@ -125,16 +192,16 @@ division and its agent count, and `--agents-file <path>` reads one slug per line
 Omit `--path` to install to `~/.claude/agents/` instead, making the agents
 available in every project rather than only this repository.
 
-### Known gap and the swaps worth considering
+### Optional additions
 
-With a cap of five, nothing here writes the **SaaS website code** — Mobile App
-Builder is mobile-only and UI Designer stops at the handoff spec. Depending on
-where you feel the pinch:
+The web-implementation gap that existed in the original five is now closed by
+Frontend Developer. The roster still stops short in a few places — add any of
+these if you hit one:
 
 | Need | Agent to add | Slug |
 |------|--------------|------|
-| React/Vue web implementation, PWAs, Core Web Vitals | Frontend Developer | `frontend-developer` |
-| Full-stack SaaS MVP (Next.js + Supabase + Stripe) | Rapid Prototyper | `rapid-prototyper` |
+| Full-stack SaaS MVP scaffolding (Next.js + Supabase + Stripe) | Rapid Prototyper | `rapid-prototyper` |
+| API design, database architecture, server-side scalability | Backend Architect | `backend-architect` |
 | Business model design, unit economics, market entry | Business Strategist | `business-strategist` |
 | Editorial calendars, campaign copy, content pillars | Content Creator | `content-creator` |
 | Paid ad copy, RSA architecture, creative testing | Ad Creative Strategist | `ad-creative-strategist` |
